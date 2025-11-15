@@ -231,7 +231,9 @@ public class Signup extends JFrame implements ActionListener
                 JOptionPane.showMessageDialog(null, "Fill all the fields");
             }else
             {
-
+                Jdbc con1 = new Jdbc();
+                String query = "insert into signup values('"+formno+"', '"+name+"', '"+father_name+"', '"+dob+"', '"+gender+"', '"+email+"', '"+marital+"', '"+address+"', '"+city+"', '"+pincode+"', '"+state+"')";
+                con1.statement.executeUpdate(query);
             }
 
         }
