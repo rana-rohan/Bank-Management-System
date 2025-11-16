@@ -98,40 +98,40 @@ public class Login extends JFrame implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-//        try
-//        {
-//            if(e.getSource()==button1)
-//            {
-//                Con cancel = new Con();
-//                String cardno = textField2.getText();
-//                String pin = passwordField3.getText();
-//                String q = "select * from login where card_no = "+cardno+" and pin = "+pin+"";
-//                ResultSet resultSet = cancel.statement.executeQuery(q);
-//                if(resultSet.next())
-//                {
-//                    setVisible(false);
-//                    new main_Class(pin);
-//                }
-//                else
-//                {
-//                    JOptionPane.showMessageDialog(null,"Incorrect Card number or PIN");
-//                }
-//            }
-//            else if(e.getSource()==button2)
-//            {
-//                textField2.setText("");
-//                passwordField3.setText("");
-//            }
-//            else if (e.getSource()==button3)
-//            {
-//                new Signup();
-//                setVisible(false);
-//            }
-//        }
-//        catch (Exception E)
-//        {
-//            E.printStackTrace();
-//        }
+        try
+        {
+            if(e.getSource()==button1)
+            {
+                Jdbc con6 = new Jdbc();
+                String cardno = textField2.getText();
+                String pin = passwordField3.getText();
+                String query = "select * from login where card_no = "+cardno+" and pin = "+pin+"";
+                ResultSet resultSet = con6.statement.executeQuery(query);
+                if(resultSet.next())
+                {
+                    setVisible(false);
+                    new MainClass(pin);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null,"Incorrect Card number or PIN");
+                }
+            }
+            else if(e.getSource()==button2)
+            {
+                textField2.setText("");
+                passwordField3.setText("");
+            }
+            else if (e.getSource()==button3)
+            {
+                new Signup();
+                setVisible(false);
+            }
+        }
+        catch (Exception E)
+        {
+            E.printStackTrace();
+        }
     }
 
     public static void main(String[] args)
