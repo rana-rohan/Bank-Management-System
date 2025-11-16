@@ -102,6 +102,11 @@ public class Login extends JFrame implements ActionListener
         {
             if(e.getSource()==button1)
             {
+                if(textField2.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(null,"Please enter card no.");
+                    return;
+                }
                 Jdbc con6 = new Jdbc();
                 String cardno = textField2.getText();
                 String pin = passwordField3.getText();

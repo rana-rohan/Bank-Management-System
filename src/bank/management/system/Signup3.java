@@ -243,8 +243,8 @@ public class Signup3 extends JFrame implements ActionListener
                     String query2 = "insert into login values('"+formno+"','"+cardno+"','"+pin+"')";
                     con3.statement.executeUpdate(query1);
                     con3.statement.executeUpdate(query2);
-                    JOptionPane.showMessageDialog(null,"Card Number: " + cardno + "\nPinChange: " + pin);
-                    new Deposit(pin);
+                    JOptionPane.showMessageDialog(null,"Card Number: " + cardno + "\nPin: " + pin);
+                    new Login();
                     setVisible(false);
                 }
             } else if (e.getSource()== cancel)
