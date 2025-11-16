@@ -220,6 +220,8 @@ public class Signup2 extends JFrame implements ActionListener
                 Jdbc con2 = new Jdbc();
                 String query = "insert into signup_two values('"+formno+"','"+religion+"','"+category+"','"+income+"','"+education+"','"+ocupation+"','"+pan+"','"+aadhar+"','"+citizen+"','"+existing_account+"')";
                 con2.statement.executeUpdate(query);
+                new Signup3(formno);
+                setVisible(false);
             }
         }
         catch (Exception E)
