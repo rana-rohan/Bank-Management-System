@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 public class MainClass extends JFrame implements ActionListener
 {
     String pin;
-    JButton b1,b2,b3,b4,b5,b6,b7;
+    JButton deposit, withdrawal, fast_cash, mini_statement, pin_change,balance_enquiry, exit;
     MainClass(String pin)
     {
         this.pin = pin;
@@ -25,54 +25,54 @@ public class MainClass extends JFrame implements ActionListener
         label.setFont(new Font("System",Font.BOLD,28));
         l3.add(label);
 
-        b1 = new JButton("DEPOSIT");
-        b1.setForeground(Color.WHITE);
-        b1.setBackground(new Color(65,125,128));
-        b1.setBounds(410,274,150,35);
-        //b1.addActionListener(this);
-        l3.add(b1);
+        deposit = new JButton("DEPOSIT");
+        deposit.setForeground(Color.WHITE);
+        deposit.setBackground(new Color(65,125,128));
+        deposit.setBounds(410,274,150,35);
+        deposit.addActionListener(this);
+        l3.add(deposit);
 
-        b2 = new JButton("WITHDRAWAL");
-        b2.setForeground(Color.WHITE);
-        b2.setBackground(new Color(65,125,128));
-        b2.setBounds(700,274,150,35);
-        //b2.addActionListener(this);
-        l3.add(b2);
+        withdrawal = new JButton("WITHDRAWAL");
+        withdrawal.setForeground(Color.WHITE);
+        withdrawal.setBackground(new Color(65,125,128));
+        withdrawal.setBounds(700,274,150,35);
+        //withdrawal.addActionListener(this);
+        l3.add(withdrawal);
 
-        b3 = new JButton("FAST CASH");
-        b3.setForeground(Color.WHITE);
-        b3.setBackground(new Color(65,125,128));
-        b3.setBounds(410,318,150,35);
-        //b3.addActionListener(this);
-        l3.add(b3);
+        fast_cash = new JButton("FAST CASH");
+        fast_cash.setForeground(Color.WHITE);
+        fast_cash.setBackground(new Color(65,125,128));
+        fast_cash.setBounds(410,318,150,35);
+        //fast_cash.addActionListener(this);
+        l3.add(fast_cash);
 
-        b4 = new JButton("MINI STATEMENT");
-        b4.setForeground(Color.WHITE);
-        b4.setBackground(new Color(65,125,128));
-        b4.setBounds(700,318,150,35);
-        //b4.addActionListener(this);
-        l3.add(b4);
+        mini_statement = new JButton("MINI STATEMENT");
+        mini_statement.setForeground(Color.WHITE);
+        mini_statement.setBackground(new Color(65,125,128));
+        mini_statement.setBounds(700,318,150,35);
+        //mini_statement.addActionListener(this);
+        l3.add(mini_statement);
 
-        b5 = new JButton("PIN CHANGE");
-        b5.setForeground(Color.WHITE);
-        b5.setBackground(new Color(65,125,128));
-        b5.setBounds(410,362,150,35);
-        //b5.addActionListener(this);
-        l3.add(b5);
+        pin_change = new JButton("PIN CHANGE");
+        pin_change.setForeground(Color.WHITE);
+        pin_change.setBackground(new Color(65,125,128));
+        pin_change.setBounds(410,362,150,35);
+        //pin_change.addActionListener(this);
+        l3.add(pin_change);
 
-        b6 = new JButton("BALANCE ENQUIRY");
-        b6.setForeground(Color.WHITE);
-        b6.setBackground(new Color(65,125,128));
-        b6.setBounds(700,362,150,35);
-        //b6.addActionListener(this);
-        l3.add(b6);
+        balance_enquiry = new JButton("BALANCE ENQUIRY");
+        balance_enquiry.setForeground(Color.WHITE);
+        balance_enquiry.setBackground(new Color(65,125,128));
+        balance_enquiry.setBounds(700,362,150,35);
+        //balance_enquiry.addActionListener(this);
+        l3.add(balance_enquiry);
 
-        b7 = new JButton("EXIT");
-        b7.setForeground(Color.WHITE);
-        b7.setBackground(new Color(65,125,128));
-        b7.setBounds(700,406,150,35);
-        //b7.addActionListener(this);
-        l3.add(b7);
+        exit = new JButton("EXIT");
+        exit.setForeground(Color.WHITE);
+        exit.setBackground(new Color(65,125,128));
+        exit.setBounds(700,406,150,35);
+        exit.addActionListener(this);
+        l3.add(exit);
 
 
 
@@ -93,6 +93,14 @@ public class MainClass extends JFrame implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        if(e.getSource()==deposit)
+        {
+            new Deposit(pin);
+            setVisible(false);
+        } else if (e.getSource()==exit)
+        {
+            System.exit(0);
+        }
 
     }
 
