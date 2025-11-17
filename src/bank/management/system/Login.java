@@ -36,7 +36,7 @@ public class Login extends JFrame implements ActionListener
         add(label1);
 
         label2 = new JLabel("Card No:");
-        label2.setFont(new Font("Ralway",Font.BOLD,28));
+        label2.setFont(new Font("Raleway",Font.BOLD,28));
         label2.setForeground(Color.WHITE);
         label2.setBounds(150,190,375,30);
         add(label2);
@@ -47,7 +47,7 @@ public class Login extends JFrame implements ActionListener
         add(textField2);
 
         label3 = new JLabel("PIN: ");
-        label3.setFont(new Font("Ralway",Font.BOLD,28));
+        label3.setFont(new Font("Raleway",Font.BOLD,28));
         label3.setForeground(Color.WHITE);
         label3.setBounds(150,250,375,30);
         add(label3);
@@ -102,7 +102,7 @@ public class Login extends JFrame implements ActionListener
         {
             if(e.getSource()==button1)
             {
-                if(textField2.getText().equals(""))
+                if(textField2.getText().isEmpty())
                 {
                     JOptionPane.showMessageDialog(null,"Please enter card no.");
                     return;

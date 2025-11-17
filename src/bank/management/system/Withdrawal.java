@@ -5,13 +5,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
-import java.util.Date;
 
 public class Withdrawal extends JFrame implements ActionListener
 {
     String pin;
     TextField textField;
     JButton withdrawal, back;
+
     Withdrawal(String pin)
     {
         this.pin = pin;
@@ -23,26 +23,26 @@ public class Withdrawal extends JFrame implements ActionListener
         l3.setBounds(0,0,1550,830);
         add(l3);
 
-        JLabel label1 = new JLabel("MAXIMUM WITHDRAWAL IS 10,000");
+        JLabel label1 = new JLabel("DAILY WITHDRAWAL LIMIT: 20,000");
         label1.setForeground(Color.WHITE);
-        label1.setFont(new Font("System",Font.BOLD,16));
-        label1.setBounds(460,180,700,35);
+        label1.setFont(new Font("System", Font.BOLD, 16));
+        label1.setBounds(460, 180, 700, 35);
         l3.add(label1);
 
         JLabel label2 = new JLabel("PLEASE ENTER YOUR AMOUNT");
         label2.setForeground(Color.WHITE);
-        label2.setFont(new Font("System",Font.BOLD,16));
-        label2.setBounds(460,220,400,35);
+        label2.setFont(new Font("System", Font.BOLD, 16));
+        label2.setBounds(460, 220, 400, 35);
         l3.add(label2);
 
         textField = new TextField();
         textField.setBackground(new Color(65,125,128));
         textField.setForeground(Color.WHITE);
         textField.setBounds(460,260,320,25);
-        textField.setFont(new Font("Rale way",Font.BOLD,22));
+        textField.setFont(new Font("Raleway", Font.BOLD, 22));
         l3.add(textField);
 
-        withdrawal = new JButton("WITHDRAWAL");
+        withdrawal = new JButton("WITHDRAW");
         withdrawal.setBounds(700,362,150,35);
         withdrawal.setBackground(new Color(65,125,128));
         withdrawal.setForeground(Color.WHITE);
@@ -61,53 +61,66 @@ public class Withdrawal extends JFrame implements ActionListener
         setLocation(0,0);
         setVisible(true);
     }
+
     @Override
     public void actionPerformed(ActionEvent e)
     {
         if (e.getSource() == withdrawal)
         {
             String amount = textField.getText().trim();
-            Date date = new Date();
 
             if (amount.equals(""))
             {
                 JOptionPane.showMessageDialog(null, "Please enter the amount you want to withdraw");
                 return;
             }
-            int amt;
+
             try
             {
-                amt = Integer.parseInt(amount);
+                int amt = Integer.parseInt(amount);
                 if (amt <= 0)
                 {
                     JOptionPane.showMessageDialog(null, "Please enter a positive amount!");
                     return;
                 }
-                if (amt > 10000)
+                if (amt > 20000)
                 {
-                    JOptionPane.showMessageDialog(null, "Maximum withdrawal limit is 10,000!");
+                    JOptionPane.showMessageDialog(null, "You cannot withdraw more than ₹20,000 at once!");
                     return;
                 }
                 Jdbc con = new Jdbc();
-                ResultSet rs = con.statement.executeQuery("SELECT * FROM bank WHERE pin = '" + pin + "'");
+                String todayPrefix = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
+                String q1 = "SELECT SUM(ammount) AS total FROM bank " + "WHERE pin='" + pin + "' " + "AND type='Withdrawal' " + "AND `date` LIKE '" + todayPrefix + "%'";
+                ResultSet rs1 = con.statement.executeQuery(q1);
+                int todayTotal = 0;
+                if (rs1.next())
+                {
+                    todayTotal = rs1.getInt("total");
+                }
+                if (todayTotal + amt > 20000)
+                {
+                    JOptionPane.showMessageDialog(null, "Daily limit exceeded!\n" + "You already withdrew ₹" + todayTotal + " today.\n" + "Remaining limit: ₹" + (20000 - todayTotal));
+                    return;
+                }
+                ResultSet rs = con.statement.executeQuery("SELECT * FROM bank WHERE pin='" + pin + "'");
                 int balance = 0;
                 while (rs.next())
                 {
                     String type = rs.getString("type");
                     int val = Integer.parseInt(rs.getString("ammount"));
-                    if (type.equals("Deposit"))
-                        balance += val;
-                    else if (type.equals("Withdrawal"))
-                        balance -= val;
+                    if (type.equals("Deposit")) balance += val;
+                    else if (type.equals("Withdrawal")) balance -= val;
                 }
                 if (balance < amt)
                 {
                     JOptionPane.showMessageDialog(null, "Insufficient Balance!");
                     return;
                 }
+                String datetime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
+                String insertQuery = "INSERT INTO bank VALUES('" + pin + "', '" + datetime + "', 'Withdrawal', '" + amt + "')";
                 Jdbc con2 = new Jdbc();
-                con2.statement.executeUpdate("INSERT INTO bank VALUES('" + pin + "', '" + date + "', 'Withdrawal', '" + amt + "')");
-                JOptionPane.showMessageDialog(null, "Rs. " + amt + " Debited Successfully");
+                con2.statement.executeUpdate(insertQuery);
+                JOptionPane.showMessageDialog(null, "Rs. " + amt + " debited successfully");
                 setVisible(false);
                 new MainClass(pin);
             }
@@ -118,7 +131,7 @@ public class Withdrawal extends JFrame implements ActionListener
             catch (Exception ex)
             {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Something went wrong!");
+                JOptionPane.showMessageDialog(null, "SQL ERROR: " + ex.getMessage());
             }
         }
         else if (e.getSource() == back)
