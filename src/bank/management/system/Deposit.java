@@ -79,11 +79,25 @@ public class Deposit extends JFrame implements ActionListener
                 }
                 else
                 {
-                    Jdbc con4 = new Jdbc();
-                    con4.statement.executeUpdate("insert into bank values('"+pin+"','"+date+"','Deposit','"+amount+"')");
-                    JOptionPane.showMessageDialog(null,"Rs. " + amount + " Deposited Successfully");
-                    new MainClass(pin);
-                    setVisible(false);
+                    try
+                    {
+                        int amt = Integer.parseInt(amount);
+                        if (amt <= 0)
+                        {
+                            JOptionPane.showMessageDialog(null, "Please enter a valid positive amount!");
+                            return;
+                        }
+                        Jdbc con4 = new Jdbc();
+                        con4.statement.executeUpdate("insert into bank values('"+pin+"','"+date+"','Deposit','"+amt+"')");
+                        JOptionPane.showMessageDialog(null, "Rs. " + amt + " Deposited Successfully");
+                        new MainClass(pin);
+                        setVisible(false);
+
+                    }
+                    catch (NumberFormatException ex)
+                    {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid numeric amount!");
+                    }
                 }
             }
             else if (e.getSource()==b2)

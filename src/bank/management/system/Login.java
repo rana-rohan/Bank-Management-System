@@ -114,8 +114,8 @@ public class Login extends JFrame implements ActionListener
                 ResultSet resultSet = con6.statement.executeQuery(query);
                 if(resultSet.next())
                 {
-                    setVisible(false);
                     new MainClass(pin);
+                    setVisible(false);
                 }
                 else
                 {
