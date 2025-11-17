@@ -99,7 +99,7 @@ public class Withdrawal extends JFrame implements ActionListener
                 }
                 if (todayTotal + amt > 20000)
                 {
-                    JOptionPane.showMessageDialog(null, "Daily limit exceeded!\n" + "You already withdrew ₹" + todayTotal + " today.\n" + "Remaining limit: ₹" + (20000 - todayTotal));
+                    JOptionPane.showMessageDialog(null, "Daily limit exceeded!\n" + "You already withdrew ₹" + todayTotal + " today.\n" + "Remaining limit: ₹" + Math.max(0, (20000 - todayTotal)));
                     return;
                 }
                 ResultSet rs = con.statement.executeQuery("SELECT * FROM bank WHERE pin='" + pin + "'");
