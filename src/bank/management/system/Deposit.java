@@ -49,16 +49,6 @@ public class Deposit extends JFrame implements ActionListener
         b2.addActionListener(this);
         l3.add(b2);
 
-
-
-
-
-
-
-
-
-
-
         setLayout(null);
         setSize(1550,1080);
         setLocation(0,0);

@@ -56,68 +56,77 @@ public class Withdrawal extends JFrame implements ActionListener
         back.addActionListener(this);
         l3.add(back);
 
-
-
-
-
-
-
-
-
-
-
         setLayout(null);
         setSize(1550,1080);
         setLocation(0,0);
         setVisible(true);
     }
-
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if(e.getSource()==withdrawal)
+        if (e.getSource() == withdrawal)
         {
-            try {
-                String amount = textField.getText();
-                Date date = new Date();
-                if (textField.getText().equals(""))
-                {
-                    JOptionPane.showMessageDialog(null, "Please enter the amount you want to withdraw");
-                } else {
-                    Jdbc con5 = new Jdbc();
-                    ResultSet resultSet = con5.statement.executeQuery("select * from bank where pin = " + pin + "");
-                    int balance = 0;
-                    while (resultSet.next())
-                    {
-                        if (resultSet.getString("type").equals("Deposit"))
-                        {
-                            balance += Integer.parseInt(resultSet.getString("ammount"));
-                        } else {
-                            balance -= Integer.parseInt(resultSet.getString("ammount"));
-                        }
-                    }
-                    if (balance < Integer.parseInt(amount))
-                    {
-                        JOptionPane.showMessageDialog(null, "Insufficient Balance");
-                        return;
-                    }
-                    con5.statement.executeUpdate("insert into bank values('" + pin + "', '" + date + "', 'Withdrawal', '" + amount + "')");
-                    JOptionPane.showMessageDialog(null, "Rs. " + amount + " Debited Successfully");
-                    setVisible(false);
-                    new MainClass(pin);
-                }
-            } catch (Exception E)
-            {
+            String amount = textField.getText().trim();
+            Date date = new Date();
 
+            if (amount.equals(""))
+            {
+                JOptionPane.showMessageDialog(null, "Please enter the amount you want to withdraw");
+                return;
+            }
+            int amt;
+            try
+            {
+                amt = Integer.parseInt(amount);
+                if (amt <= 0)
+                {
+                    JOptionPane.showMessageDialog(null, "Please enter a positive amount!");
+                    return;
+                }
+                if (amt > 10000)
+                {
+                    JOptionPane.showMessageDialog(null, "Maximum withdrawal limit is 10,000!");
+                    return;
+                }
+                Jdbc con = new Jdbc();
+                ResultSet rs = con.statement.executeQuery("SELECT * FROM bank WHERE pin = '" + pin + "'");
+                int balance = 0;
+                while (rs.next())
+                {
+                    String type = rs.getString("type");
+                    int val = Integer.parseInt(rs.getString("ammount"));
+                    if (type.equals("Deposit"))
+                        balance += val;
+                    else if (type.equals("Withdrawal"))
+                        balance -= val;
+                }
+                if (balance < amt)
+                {
+                    JOptionPane.showMessageDialog(null, "Insufficient Balance!");
+                    return;
+                }
+                Jdbc con2 = new Jdbc();
+                con2.statement.executeUpdate("INSERT INTO bank VALUES('" + pin + "', '" + date + "', 'Withdrawal', '" + amt + "')");
+                JOptionPane.showMessageDialog(null, "Rs. " + amt + " Debited Successfully");
+                setVisible(false);
+                new MainClass(pin);
+            }
+            catch (NumberFormatException ex)
+            {
+                JOptionPane.showMessageDialog(null, "Please enter a valid numeric amount!");
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Something went wrong!");
             }
         }
-        else if (e.getSource()==back)
+        else if (e.getSource() == back)
         {
             setVisible(false);
             new MainClass(pin);
         }
     }
-
     public static void main(String[] args)
     {
         new Withdrawal("");
